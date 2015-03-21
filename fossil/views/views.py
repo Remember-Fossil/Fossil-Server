@@ -5,7 +5,7 @@ blue_home = Blueprint('main', __name__, url_prefix='')
 
 @blue_home.route('/login', methods=['GET'])
 def login():
-    if 'user_id' in session:
+    if not 'user_id' in session:
         if request.args.get('code', False):
             fb = FB(current_app.config['FACEBOOK_APP_ID'], current_app.config['FACEBOOK_APP_SECRET'])
             access_token = fb.get_access_token(request.form['code'])
