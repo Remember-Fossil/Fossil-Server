@@ -2,60 +2,20 @@
 {% block container %}
             <div class="row">
                 
+                {% for member in members %}
                 <div class="col s12 m6 l4">
                     <a href="#">
                         <div class="card">
                             <div class="card-image">
-                                <img src="images/sample-1.jpg" class="img-size">
+                                <img src="{{ member.profile_image }}" class="img-size">
                             </div>
                             <div class="card-content">
-                                <p>Card Content</p>
+                                <p>{{ member.name }}</p>
                             </div>
                         </div>
                     </a>
                 </div>
-                
-                
-                <div class="col s12 m6 l4">
-                    <a href="#">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="images/add.jpg" class="img-size">
-                            </div>
-                            <div class="card-content">
-                                <p>Card Content</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                
-                
-                <div class="col s12 m6 l4">
-                    <a href="#">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="images/add.jpg" class="img-size">
-                            </div>
-                            <div class="card-content">
-                                <p>Card Content</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                
-                
-                <div class="col s12 m6 l4">
-                    <a href="#">
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="images/sample-1.jpg" class="img-size">
-                            </div>
-                            <div class="card-content">
-                                <p>Card Content</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                {% endfor %}
                 
 
             </div>
