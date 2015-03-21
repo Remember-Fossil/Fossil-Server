@@ -3,34 +3,35 @@
     <head>
         <meta charset='utf-8'>
 
-	{% block head %}
-	{% endblock %}
+        {% block head %}
+        {% endblock %}
 
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css">
-        <link rel="stylesheet" href="css/basic.css">
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
-
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/basic.css') }}">
         <title>Remember Fossil</title>
     </head>
     <body>
         <nav>
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Remember Fossil</a>
+                <a href="{{ url_for('auth.login') }}" class="brand-logo">Remember Fossil</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="components.html">Components</a></li>
-                <li><a href="javascript.html">JavaScript</a></li>
-            </ul>
+                    {% if group %}
+                    <li><a href="{{ url_for('groups.group_members', group_id=group.id) }}">멤버</a></li>
+                    <li><a href="{{ url_for('groups.group_exam', group_id=group.id) }}">시험</a></li>
+<!--                    <li><a href="#">관리</a></li>-->
+                    {% endif %}
+                </ul>
             </div>
         </nav>
         <div class="container">
             {% block container %}
             {% endblock %}
         </div>
+        
+<!-- Compiled and minified JavaScript -->
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
 {% block lazy_script %}
 {% endblock %}
     </body>

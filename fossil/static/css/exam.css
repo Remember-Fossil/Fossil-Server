@@ -1,0 +1,41 @@
+.exam-box {
+    margin-top: 40px;
+}
+
+.exam-image-box {
+    text-align: center;
+    border-right: 1px solid #ddd;
+}
+
+.exam-image {
+    height: 400px;
+    margin: 20px 0;
+}
+
+.exam-answer-wrap {
+    height: 480px;
+}
+
+.exam-answer-box {
+    margin: 50px 40px;
+}
+
+.exam-answer-item {
+    margin: 4px 0;
+    padding: 18px 0;
+}
+
+.exam-answer-item label {
+    font-size: 1.8em !important;
+    width: 100%;
+}
+
+.btn-check {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+/*    margin: auto 0;*/   
+}
+
+.btn-wrap {
+    text-align: center;
+}

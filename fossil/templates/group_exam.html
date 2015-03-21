@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/exam.css') }}">
+{% endblock %}
 {% block container %}
             <div class="row exam-box">
                 <div class="exam-image-box col m6 s12">
