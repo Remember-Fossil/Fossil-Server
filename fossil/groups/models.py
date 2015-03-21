@@ -34,3 +34,20 @@ class Member(db.Model):
     profile_image = db.StringProperty()
     facebook_id = db.StringProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
+
+
+class GameLog(db.Model):
+    group = db.ReferenceProperty(Group)
+    user = db.ReferenceProperty(User)
+
+    created_at = db.DateTimeProperty(auto_now_add=True)
+
+    question_member = db.ReferenceProperty(Member)
+    answers = db.StringProperty()       # JSON
+
+    NOT_SOLVED = 0
+    CORRECT = 1
+    INCORRECT = 2
+    status = db.IntegerProperty(default=NOT_SOLVED)
+
+    user_answer = db.ReferenceProperty(Member)
