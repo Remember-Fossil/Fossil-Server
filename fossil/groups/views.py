@@ -168,11 +168,9 @@ def end_game(game, status, user_select_member=None):
     game.put()
 
     if status == GameLog.INCORRECT:
-        # TODO: Post article on group.
-        # <Member: game.question_member> 질문
-        # <Member: user_select_member> 유저가 선택한 멤버. / None
-        pass
-
+        message = '에베베베베베 난 겁나 멍청멍청해서 선배이름이랑 얼굴도 모른다~~~~'
+        graph = Graph(g.fb_session['token'])
+        graph.post('/{0}/feed', {'message': message})
 
 @blue_groups.route('/<int:group_id>/exam/<int:game_id>/check',
                    methods=['POST'])
