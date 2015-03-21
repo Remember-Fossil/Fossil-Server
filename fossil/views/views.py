@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import current_app, Blueprint, request, render_template, session
 from fb import FB, Graph
-blue_home = Blueprint('main', __name__, url_prefix='/')
+blue_home = Blueprint('main', __name__, url_prefix='')
 
 @blue_home.route('/login', methods=['GET'])
 def login():
