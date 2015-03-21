@@ -7,6 +7,7 @@ from .utils import check_facebook_session
 
 blue_auth = Blueprint('auth', __name__, url_prefix='')
 
+
 @blue_auth.route('/')
 @blue_auth.route('/login')
 def login():
@@ -19,18 +20,19 @@ def login():
 
             profile_data = graph.feed_get('me', {})
             user = User.all().filter('facebook_id =', profile_data['id']).get()
-            if  user == None:
+            if user is None:
                 user = User()
                 user.facebook_id = profile_data['id']
                 user.name = "{0}{1}".format(
                     profile_data['last_name'].encode('utf-8'),
                     profile_data['first_name'].encode('utf-8'))
                 image_url = graph.feed_get('me/picture',
-                                           {'redirect':False})['data']['url']
+                                           {'redirect': False})['data']['url']
                 user.profile_image = ''
                 user.put()
 
-            fb_session = FacebookSession.all().filter('user =', user.key()).get()
+            fb_session = FacebookSession.all().filter(
+                'user =', user.key()).get()
             if check_facebook_session(fb_session):
                 fb_session.access_token = access_token
                 fb_session.expires = int(expires)
@@ -43,14 +45,13 @@ def login():
                 fb_session.put()
 
             session['user_id'] = user.key().id_or_name()
-            return render_template('home.html', profile_data=profile_data)
-            #return redirect(url_for())
-    return render_template('login.html',
-                           facebook=current_app.config['FACEBOOK'])
+        else:
+            return render_template('login.html',
+                                   facebook=current_app.config['FACEBOOK'])
+    return redirect(url_for('groups.group_list'))
+
 
 @blue_auth.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('auth.login'))
-
-

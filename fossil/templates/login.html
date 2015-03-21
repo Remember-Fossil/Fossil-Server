@@ -1,40 +1,12 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset='utf-8'>
-
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css">
-        <link rel="stylesheet" href="css/basic.css">
-        <link rel="stylesheet" href="css/main.css">
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
-
-        <title>Remember Fossil</title>
-    </head>
-    <body>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Remember Fossil</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="components.html">Components</a></li>
-                <li><a href="javascript.html">JavaScript</a></li>
-            </ul>
-            </div>
-        </nav>
-        <div class="container">
-            <br><br>
-            <h1 class="header center orange-text">Starter Template</h1>
+{% extends 'base.html' %}
+{% block container %}
+<br><br>            
+<h1 class="header center orange-text">Starter Template</h1>
             <div class="row center">
                 <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
             </div>
             <div class="row center">
               <a href="https://graph.facebook.com/oauth/authorize?client_id={{ facebook.APP_ID }}&redirect_uri={{ facebook.REDIRECT_URI }}" type="button" class="btn-large waves-effect waves-light orange">Facebook 로그인</a>
             </div>
-            <br><br>
-        </div>
-    </body>
-</html>
+<br><br>
+{% endblock %}

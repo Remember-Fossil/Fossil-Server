@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/exam.css') }}">
+{% endblock %}
+{% block container %}
+            <div class="row exam-box">
+                <div class="exam-image-box col m6 s12">
+                    <image src="http://www.fmkorea.com/files/attach/new/20141206/3655109/44984590/83575268/9082ccadd8f78586d91b995204a4084d.jpg" class="exam-image"></image>
+                </div>
+                <div class="col m6 s12 exam-answer-wrap">
+                    <div class="exam-answer-box">
+                        <p class="exam-answer-item">
+                            <input name="answer" type="radio" id="answer-1" checked />
+                            <label for="answer-1">Red</label>
+                        </p>
+                        <p class="exam-answer-item">
+                            <input name="answer" type="radio" id="answer-2" />
+                            <label for="answer-2">Red</label>
+                        </p>
+                        <p class="exam-answer-item">
+                            <input name="answer" type="radio" id="answer-3" />
+                            <label for="answer-3">Red</label>
+                        </p>
+                        <p class="exam-answer-item">
+                            <input name="answer" type="radio" id="answer-4" />
+                            <label for="answer-4">Red</label>
+                        </p>
+                        <p class="exam-answer-item">
+                            <input name="answer" type="radio" id="answer-5" />
+                            <label for="answer-5">Red</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-wrap">
+                <button class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4 id="modal-title">Modal Header</h4>
+                    <div class="row" style="width: 100%">
+                        <div class="col s12 m6" style="text-align: center">
+                            <image src="http://www.fmkorea.com/files/attach/new/20141206/3655109/44984590/83575268/9082ccadd8f78586d91b995204a4084d.jpg" class="exam-image" style="height: 300px"></image>
+                        </div>
+                        <div class="col s12 m6" style="height: 300px; text-align: center">
+                            <h4 style="margin-top: 150px">아이유</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Agree</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+{% block lazy_script %}
+        <script>
+            $(document).ready(function() {
+                $('#btn-check').click(function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: '',
+                        data: {asdf: ''},
+                        success: function( data ) {
+                            $('#modal1').openModal();
+                        }
+                    });
+               });
+            });
+        </script>
+{% endblock %} 
