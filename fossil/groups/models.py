@@ -26,6 +26,14 @@ class Group(db.Model):
 
         return None
 
+    @classmethod
+    def get_groups_by_user(cls, user):
+        groups = []
+        for member in Member.all() \
+                .filter('facebook_id =', user.facebook_id):
+            groups.append(member.group)
+
+        return groups
 
 class Member(db.Model):
     group = db.ReferenceProperty(Group)

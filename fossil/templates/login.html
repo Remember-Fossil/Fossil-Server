@@ -6,7 +6,7 @@
                 <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
             </div>
             <div class="row center">
-              <a href="https://graph.facebook.com/oauth/authorize?client_id={{ facebook.APP_ID }}&redirect_uri={{ facebook.REDIRECT_URI }}" type="button" class="btn-large waves-effect waves-light orange">Facebook 로그인</a>
+              <a href="https://graph.facebook.com/oauth/authorize?client_id={{ facebook.APP_ID }}&redirect_uri={{ facebook.REDIRECT_URI }}&scope={{ ','.join(facebook.SCOPE) }}" type="button" class="btn-large waves-effect waves-light orange">Facebook 로그인</a>
             </div>
 <br><br>
 {% endblock %}
