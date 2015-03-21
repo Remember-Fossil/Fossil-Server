@@ -13,7 +13,8 @@ def login():
 
             profile_data = graph.feed_get('/me', {})
             print profile_data
+            return render_template('home.html', profile_data=profile_data)
         else:
             pass
 
-    return render_template('home.html', profile_data=profile_data)
+    return render_template('login.html')
