@@ -1,0 +1,30 @@
+.img-size:last-child {
+/*    width:268px;*/
+    height:232px;
+    margin: 0;
+    padding: 0;
+}
+
+.card-wrapper {
+    text-align: center;
+}
+
+.card {
+    width: 232px;
+    margin: 20px auto !important;
+}
+
+.img-size {
+    height: 232px;
+    margin:0;
+    padding: 0;
+}
+
+.card-image {
+    height: 232px;
+    text-align: center;
+}
+
+.mdi-content-add {
+    font-size: 11rem;
+}

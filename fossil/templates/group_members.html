@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/group_members.css') }}">
+{% endblock %}
 {% block container %}
             <div class="row">
                 
                 {% for member in members %}
-                <div class="col s12 m6 l4">
+                <div class="col s12 m6 l4 card-wrapper">
                     <a href="#">
                         <div class="card">
                             <div class="card-image">

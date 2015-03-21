@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, abort, g, request, redirect, url_for
+from flask import Blueprint, render_template, abort, g, request, redirect, \
+    url_for, jsonify
 from .models import Group, Member, GameLog
 from fossil.fb import Graph
 from fossil.auth.decorators import login_required
+from google.appengine.ext import db
 import random
 import json
 
@@ -26,7 +28,7 @@ def group_add():
             id_list.append(group.group_id)
 
         groups = graph.get_groups()
-        filter(lambda x: x['id'] in id_list, groups)
+        groups = filter(lambda x: x['id'] not in id_list, groups)
 
         return render_template('group_add.html', groups=groups)
     elif request.method == 'POST':
@@ -49,7 +51,10 @@ def group_add():
             member = Member()
             member.group = group
             member.name = user_info['name']
-            image_url = graph.get('/{0}/picture'.format(user_info['id']), {'redirect': False})['data']['url']
+            image_url = graph.get('/{0}/picture'.format(user_info['id']), {
+                'redirect': False,
+                'type': 'large',
+            })['data']['url']
             member.profile_image = image_url
             member.facebook_id = user_info['id']
             member.put()
@@ -96,25 +101,40 @@ def group_exam_get_question(group_id):
         .get()
 
     if last_game:
+        print "######## GAME ALREADY EXISTS!!!! ############"
         game = last_game
+        answers_ids = json.loads(game.answers)
+        answers_names = []
+        for member_facebook_id in answers_ids:
+            member = Member.all() \
+                .filter('group =', group.key()) \
+                .filter('facebook_id =', member_facebook_id) \
+                .get()
+            answers_names.append(member.name)
     else:
-        members = group.member_set
+        members = []
+        for member in group.member_set:
+            members.append(member)
+
         if members is None or len(members) == 0:
             return 'No members!!'
 
         while True:
-            question_member = random.choice(members).get()
-            if question_member.facebook_id == user.facebook_id:
+            t = random.choice(members)
+            question_member = random.choice(members)
+            if question_member.facebook_id == g.user.facebook_id:
                 continue
             break
 
         answer_members = []
         for i in range(4):
             while True:
-                member = random.choice(members).get()
-                if member.facebook_id == user.facebook_id:
+                member = random.choice(members)
+                if member.facebook_id == g.user.facebook_id:
                     continue
                 if member.facebook_id == question_member.facebook_id:
+                    continue
+                if member in answer_members:
                     continue
                 break
             answer_members.append(member)
@@ -124,19 +144,33 @@ def group_exam_get_question(group_id):
             answer_num = random.randint(0, 3)
             answer_members[answer_num] = question_member
 
-        answers = [
+        answers_ids = [
             answer_member.facebook_id for answer_member in answer_members]
+        answers_names = [
+            answer_member.name for answer_member in answer_members]
         game = GameLog(group=group,
                        user=g.user,
                        question_member=question_member,
-                       answers=json.dumps(answers),
+                       answers=json.dumps(answers_ids),
                        status=GameLog.NOT_SOLVED)
         game.put()
 
     return jsonify({'game_id': game.key().id_or_name(),
                     'question_image': game.question_member.profile_image,
-                    'answers': answers})
+                    'answers': answers_names})
 
+
+@db.transactional
+def end_game(game, status, user_select_member=None):
+    if user_select_member:
+        game.user_select_member = user_select_member
+    game.status = status
+    game.put()
+
+    if status == GameLog.INCORRECT:
+        message = '에베베베베베 난 겁나 멍청멍청해서 선배이름이랑 얼굴도 모른다~~~~'
+        graph = Graph(g.fb_session['token'])
+        graph.post('/{0}/feed', {'message': message})
 
 @blue_groups.route('/<int:group_id>/exam/<int:game_id>/check',
                    methods=['POST'])
@@ -152,16 +186,33 @@ def group_exam_check(group_id, game_id):
             game.status != GameLog.NOT_SOLVED:
         abort(404)
 
-    selected = request.form['selected']  # 0(Not exists) 1 2 3 4
+    selected = int(request.form['selected']) - 1  # 0(Not exists) 1 2 3 4
+    question_member = game.question_member
     answers = json.loads(game.answers)
 
     if question_member.facebook_id in answers:
         # If answer is exist
-        if answers[selected] == question_member.facebook_id:
+        if selected >= 0 and answers[selected] == question_member.facebook_id:
             # Correct!
-            game.user_answer = question_member
-            game.status = GameLog.CORRECT
-            game.put()
+            end_game(game, GameLog.CORRECT, question_member)
+            return jsonify({'result': 'correct'})
+        else:
+            # Incorrect!
+            if selected >= 0:
+                user_select_member = Member.all() \
+                    .filter('group =', group.key()) \
+                    .filter('facebook_id =', answers[selected]) \
+                    .get()
+                end_game(game, GameLog.INCORRECT, user_select_member)
+            else:
+                end_game(game, GameLog.INCORRECT, question_member)
+            return jsonify({'result': 'incorrect',
+                            'answer_name': question_member.name})
+    else:
+        # If answer is NOT EXIST
+        if selected == -1:
+            # Correct!
+            end_game(game, GameLog.CORRECT, question_member)
             return jsonify({'result': 'correct'})
         else:
             # Incorrect!
@@ -169,23 +220,7 @@ def group_exam_check(group_id, game_id):
                 .filter('group =', group.key()) \
                 .filter('facebook_id =', answers[selected]) \
                 .get()
-            game.user_answer = user_select_member
-            game.status = GameLog.INCORRECT
-            game.put()
-            # TODO: Post article on group.
-            return jsonify({'result': 'incorrect',
-                            'answer_name': question_member.name})
-    else:
-        # If answer is NOT EXIST
-        if selected == 0:
-            # Correct!
-            game.status = GameLog.CORRECT
-            game.put()
-            return jsonify({'result': 'correct'})
-        else:
-            # Incorrect!
-            game.status = GameLog.INCORRECT
-            game.put()
+            end_game(game, GameLog.INCORRECT, user_select_member)
             # TODO: Post article on group.
             return jsonify({'result': 'incorrect',
                             'answer_name': question_member.name})
