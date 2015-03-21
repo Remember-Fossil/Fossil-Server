@@ -60,5 +60,5 @@ docs/_build/
 .DS_Store
 
 # Application Config file
-# fossil_config.py
+fossil_config.py
 
