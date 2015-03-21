@@ -6,9 +6,11 @@ def create_app(config_filename):
     app = Flask(__name__)
     app.config.from_object(config_filename)
 
-    from fossil.views.views import blue_home
+    from fossil.auth.views import blue_auth
+    from fossil.groups.views import blue_groups
 
-    app.register_blueprint(blue_home)
+    app.register_blueprint(blue_auth)
+    app.register_blueprint(blue_groups)
 
     return app
 

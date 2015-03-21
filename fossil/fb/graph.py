@@ -10,6 +10,17 @@ class Graph:
     def _url(self, path):
         return self.graph_api_url + path
 
+    def feed_post(self, path, data):
+        url = self._url(path)
+        data['access_token'] = self._token
+        response = requests.post(url, data=data)
+        return response.json()
+
+    def feed_get(self, path, params):
+        url = self._url(path)
+        params['access_token'] = self._token
+        response = requests.get(url, params=params)
+
     def get_groups(self, group_name=None):
         url = self._url('/me/groups')
         result = []
@@ -32,18 +43,9 @@ class Graph:
             return (item for item in result if item['name'] == group_name).next()
         return json.loads(result)
 
-    def feed_post(self, path, data):
-        url = self._url(path)
-        data['access_token'] = self._token
-        response = requests.post(url, data=data)
-        return response.json()
-
-    def feed_get(self, path, params):
-        url = self._url(path)
-        params['access_token'] = self._token
-        response = requests.get(url, params=params)
-        return response.json()
+    return response.json()
 
     def next_pagenation(self, link):
         response = requests.get(link)
         return response.json()
+

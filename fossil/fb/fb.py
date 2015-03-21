@@ -13,7 +13,7 @@ class FB:
         response = requests.get(url, params = {
             'client_id': self._fb_app_id,
             'client_secret': self._fb_app_secret,
-            'redirect_uri': current_app.config['FACEBOOK_REDIRECT_URL'],
+            'redirect_uri': current_app.config['FACEBOOK']['REDIRECT_URI'],
             'code': code
         })
 
@@ -21,5 +21,5 @@ class FB:
             raise ValueError
 
         data = urldecode(response.content)
-        return data['access_token']
+        return data['access_token'], data['expires']
 
