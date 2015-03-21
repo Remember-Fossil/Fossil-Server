@@ -25,7 +25,8 @@ def login():
                 user.name = "{0}{1}".format(
                     profile_data['last_name'].encode('utf-8'),
                     profile_data['first_name'].encode('utf-8'))
-                image_url = graph.feed_get('me/picture', {'redirect':False})['data']['url']
+                image_url = graph.feed_get('me/picture',
+                                           {'redirect':False})['data']['url']
                 user.profile_image = ''
                 user.put()
 
@@ -40,6 +41,7 @@ def login():
                 fb_session.token = access_token
                 fb_session.expires = int(expires)
                 fb_session.put()
+
             session['user_id'] = user.key().id_or_name()
             return render_template('home.html', profile_data=profile_data)
             #return redirect(url_for())

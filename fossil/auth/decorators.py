@@ -5,6 +5,7 @@ from .models import User
 
 class LoginRequired(object):
 
+    #uf_function으로 url_for 호출함수 커스텀가능
     def __init__(self, *args, **kwargs):
         super(LoginRequired, self).__init__(*args, **kwargs)
 
