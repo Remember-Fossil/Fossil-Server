@@ -11,6 +11,12 @@ def group_list():
     return render_template('group_list.html')
 
 
+@blue_groups.route('/add')
+@login_required
+def group_add():
+    return render_template('group_add.html')
+
+
 @blue_groups.route('/<int:group_id>')
 @blue_groups.route('/<int:group_id>/members')
 @login_required
