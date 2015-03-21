@@ -3,67 +3,154 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/exam.css') }}">
 {% endblock %}
 {% block container %}
-            <div class="row exam-box">
-                <div class="exam-image-box col m6 s12">
-                    <image src="http://www.fmkorea.com/files/attach/new/20141206/3655109/44984590/83575268/9082ccadd8f78586d91b995204a4084d.jpg" class="exam-image"></image>
-                </div>
-                <div class="col m6 s12 exam-answer-wrap">
-                    <div class="exam-answer-box">
-                        <p class="exam-answer-item">
-                            <input name="answer" type="radio" id="answer-1" checked />
-                            <label for="answer-1">Red</label>
-                        </p>
-                        <p class="exam-answer-item">
-                            <input name="answer" type="radio" id="answer-2" />
-                            <label for="answer-2">Red</label>
-                        </p>
-                        <p class="exam-answer-item">
-                            <input name="answer" type="radio" id="answer-3" />
-                            <label for="answer-3">Red</label>
-                        </p>
-                        <p class="exam-answer-item">
-                            <input name="answer" type="radio" id="answer-4" />
-                            <label for="answer-4">Red</label>
-                        </p>
-                        <p class="exam-answer-item">
-                            <input name="answer" type="radio" id="answer-5" />
-                            <label for="answer-5">Red</label>
-                        </p>
+            <div id="exam-container">
+                <div class="row exam-box">
+                    <div class="exam-image-box col m6 s12">
+                        <img class="exam-image" id="question-image"></img>
+                    </div>
+                    <input type="hidden" id="game_id">
+                    <div class="col m6 s12 exam-answer-wrap">
+                        <div class="exam-answer-box">
+                            <p class="exam-answer-item">
+                                <input name="answer" type="radio" id="answer-1" value="0" checked />
+                                <label for="answer-1" id="label-answer-1">답지에 없음</label>
+                            </p>
+                            <p class="exam-answer-item">
+                                <input name="answer" type="radio" id="answer-2" value="1" />
+                                <label for="answer-2" id="label-answer-2"></label>
+                            </p>
+                            <p class="exam-answer-item">
+                                <input name="answer" type="radio" id="answer-3" value="2" />
+                                <label for="answer-3" id="label-answer-3"></label>
+                            </p>
+                            <p class="exam-answer-item">
+                                <input name="answer" type="radio" id="answer-4" value="3" />
+                                <label for="answer-4" id="label-answer-4"></label>
+                            </p>
+                            <p class="exam-answer-item">
+                                <input name="answer" type="radio" id="answer-5" value="4" />
+                                <label for="answer-5" id="label-answer-5"></label>
+                            </p>
+                        </div>
                     </div>
                 </div>
+                <div class="btn-wrap">
+                    <button class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
+                </div>
             </div>
-            <div class="btn-wrap">
-                <button class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
+            
+            <div class="loading-wrapper">
+                <div class="loading-box preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                    <div class="spinner-layer spinner-red">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+
+                  <div class="spinner-layer spinner-yellow">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+
+                  <div class="spinner-layer spinner-green">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div><!--
+                --><div class="vertical"></div>
             </div>
+            
             <!-- Modal Structure -->
             <div id="modal1" class="modal modal-fixed-footer">
                 <div class="modal-content">
-                    <h4 id="modal-title">Modal Header</h4>
+                    <h4 id="modal-title">틀렸습니다!</h4>
                     <div class="row" style="width: 100%">
                         <div class="col s12 m6" style="text-align: center">
-                            <image src="http://www.fmkorea.com/files/attach/new/20141206/3655109/44984590/83575268/9082ccadd8f78586d91b995204a4084d.jpg" class="exam-image" style="height: 300px"></image>
+                            <img class="exam-image" id="modal-image" style="height: 300px"></img>
                         </div>
                         <div class="col s12 m6" style="height: 300px; text-align: center">
-                            <h4 style="margin-top: 150px">아이유</h4>
+                            <h4 style="margin-top: 150px" id="modal-name"></h4>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Agree</a>
+                    <a id="modal-btn-next" href="#" onclick="reloadQuestion()" class="waves-effect waves-green btn-flat modal-action modal-close">다음</a>
                 </div>
             </div>
         </div>
 {% endblock %}
 {% block lazy_script %}
         <script>
+            function reloadQuestion() {
+                $('#exam-container').css('display', 'none');
+                $('.loading-wrapper').css('display', 'fixed');
+                
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url_for("groups.group_exam_get_question", group_id=group.key().id_or_name()) }}',
+                    data: {},
+                    success: function( data ) {
+                        if ($('#game_id').val() == data.game_id) {
+                            setTimeout(reloadQuestion(), 500);
+                        }
+                        
+                        $('#answer-1').prop('checked', true);
+                        $('#game_id').val(data.game_id);
+                        $('#question-image').attr('src', data.question_image);
+                        $('#modal-image').attr('src', data.question_image);
+                        for (i = 2; i <= 5; i++) {
+                            item_id = '#label-answer-' + i;
+                            $(item_id).text(data.answers[i - 2]);
+                        }
+                        
+                        $('#exam-container').css('display', 'block');
+                        $('.loading-wrapper').css('display', 'none');
+                    }
+                });
+            }
+            
             $(document).ready(function() {
+                reloadQuestion();
+                
                 $('#btn-check').click(function() {
+                    game_id = $('#game_id').val();
                     $.ajax({
                         type: 'POST',
-                        url: '',
-                        data: {asdf: ''},
+                        url: '/groups/{{ group.key().id_or_name() }}/exam/' + game_id + '/check',
+                        data: {selected: $('input[name=answer]:checked').val()},
                         success: function( data ) {
-                            $('#modal1').openModal();
+                            if (data.result == 'correct') {
+                                toast('정답입니다!', 3000);
+                                reloadQuestion();
+                            } else {
+                                $('#modal-name').text(data.answer_name);
+                                $('#modal1').openModal();
+                            }
                         }
                     });
                });

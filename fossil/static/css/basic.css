@@ -9,3 +9,27 @@ nav {
 .brand-logo {
     padding-left: 8px;
 }
+
+.loading-wrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+/*    background-color: rgba(0, 0, 0, 0.5);*/
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 999;
+/*    transition: all 1s;*/
+}
+
+.loading-wrapper .vertical {
+    display:inline-block;
+    height:100%;
+    width: 0px;
+    vertical-align: middle;
+    
+}
+.loading-box {
+    vertical-align: middle;
+    
+}

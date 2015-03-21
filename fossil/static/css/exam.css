@@ -1,3 +1,7 @@
+#exam-container {
+    display: none;
+}
+
 .exam-box {
     margin-top: 40px;
 }
@@ -9,6 +13,7 @@
 
 .exam-image {
     height: 400px;
+    max-width: 300px;
     margin: 20px 0;
 }
 
