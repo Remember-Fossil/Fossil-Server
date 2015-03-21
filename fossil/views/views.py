@@ -7,6 +7,8 @@ from .utils import check_facebook_session
 
 blue_home = Blueprint('main', __name__, url_prefix='')
 
+
+@blus_home.route('/')
 @blue_home.route('/login')
 def login():
     if not 'user_id' in session:
@@ -41,6 +43,7 @@ def login():
                 fb_session.put()
             session['user_id'] = user.key().id_or_name()
             return render_template('home.html', profile_data=profile_data)
+            #return redirect(url_for())
     return render_template('login.html',
                            facebook=current_app.config['FACEBOOK'])
 
