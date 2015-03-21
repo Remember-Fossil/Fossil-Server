@@ -5,9 +5,10 @@ from fb import FB, Graph
 from .models import User, FacebookSession
 from .utils import check_facebook_session
 
-blue_home = Blueprint('main', __name__, url_prefix='')
+blue_auth = Blueprint('auth', __name__, url_prefix='')
 
-@blue_home.route('/login')
+@blue_auth.route('/')
+@blue_auth.route('/login')
 def login():
     if not 'user_id' in session:
         if request.args.get('code', False):
@@ -41,12 +42,13 @@ def login():
                 fb_session.put()
             session['user_id'] = user.key().id_or_name()
             return render_template('home.html', profile_data=profile_data)
+            #return redirect(url_for())
     return render_template('login.html',
                            facebook=current_app.config['FACEBOOK'])
 
-@blue_home.route('/logout')
+@blue_auth.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('main.login'))
+    return redirect(url_for('auth.login'))
 
 
