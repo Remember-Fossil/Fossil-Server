@@ -13,7 +13,7 @@ blue_groups = Blueprint('groups', __name__, url_prefix='/groups')
 @login_required
 def group_list():
     groups = Group.get_groups_by_user(g.user)
-    return render_template('group_list.html', groups = groups)
+    return render_template('group_list.html', groups=groups)
 
 
 @blue_groups.route('/add', methods=['GET', 'POST'])
@@ -28,7 +28,7 @@ def group_add():
         groups = graph.get_groups()
         filter(lambda x: x['id'] in id_list, groups)
 
-        return render_template('group_add.html', groups = groups)
+        return render_template('group_add.html', groups=groups)
     elif request.method == 'POST':
         group_id = request.form.get('group_id', False)
         if not group_id:
@@ -43,13 +43,14 @@ def group_add():
 
         group_members = graph.get('/{0}/members'.format(group_id), {})
 
-        #실제로 절대하면안되는짓임 100% timeout
+        # 실제로 절대하면안되는짓임 100% timeout
         for user in group_members['data']:
             user_info = graph.get('/{0}'.format(user['id']), {})
             member = Member()
             member.group = group
             member.name = user_info['name']
-            image_url = graph.get('/me/picture', {'redirect': False})['data']['url']
+            image_url = graph.get(
+                '/me/picture', {'redirect': False})['data']['url']
             member.profile_image = image_url
             member.facebook_id = user_info['id']
             member.put()
@@ -67,7 +68,9 @@ def group_members(group_id):
     if not group:
         abort(404)
 
-    return render_template('group_members.html', group=group)
+    members = Member.all().filter('group =', group.key())
+
+    return render_template('group_members.html', group=group, members=members)
 
 
 @blue_groups.route('/<int:group_id>/exam')

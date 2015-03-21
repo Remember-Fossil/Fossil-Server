@@ -35,6 +35,7 @@ class Group(db.Model):
 
         return groups
 
+
 class Member(db.Model):
     group = db.ReferenceProperty(Group)
 
@@ -58,4 +59,5 @@ class GameLog(db.Model):
     INCORRECT = 2
     status = db.IntegerProperty(default=NOT_SOLVED)
 
-    user_answer = db.ReferenceProperty(Member)
+    user_answer = db.ReferenceProperty(Member,
+                                       collection_name='answer_gamelog_set')
