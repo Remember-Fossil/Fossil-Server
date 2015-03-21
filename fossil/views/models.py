@@ -14,13 +14,15 @@ from google.appengine.ext import db
 #    friends = db.ListProperty(db.Key)
 
 class User(db.Model):
-    facebook_id = db.StringProperty(unique=True)
+    facebook_id = db.StringProperty()
     name = db.StringProperty()
-    profile_image = db.StrginProperty()
+    profile_image = db.StringProperty()
     created_at  = db.DateTimeProperty(auto_now_add=True)
 
 class FacebookSession(db.Model):
     user = db.ReferenceProperty(User)
     token = db.StringProperty()
-    expire = db.IntegerProperty()
+    expires = db.IntegerProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
+
+
