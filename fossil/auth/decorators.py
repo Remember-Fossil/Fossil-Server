@@ -2,7 +2,7 @@
 
 from flask import g, session, redirect, url_for
 from functools import wraps
-from .models import User
+from .models import User, FacebookSession
 
 
 # class LoginRequired(object):
@@ -24,6 +24,8 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if not session.get('user_id', False):
             return redirect(url_for('auth.login'))
-        g.user = User.get_by_id(session['user_id'])
+        user = User.get_by_id(session['user_id'])
+        g.user = user
+        g.fb_session = FacebookSession.all().filter('user = ', user).get()
         return f(*args, **kwargs)
     return decorated_function

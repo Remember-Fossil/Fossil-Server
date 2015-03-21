@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
+
 {% block head %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/group_add.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/group_add.css') }}">
 {% endblock %}
+
 {% block container %}
-            <div class="group-list">
-                <form method="get" action="#">
-                    <br>
-                    <input type="radio" name="radio" id="a1" class="radio">
-                    <label for="a1">운천중학교 3-1 동문회</label>
-                    <br>
-                    <input type="radio" name="radio" id="a2" class="radio">
-                    <label for="a2">우주여우</label>
-                    <br>
-                    <input type="radio" name="radio" id="a3" class="radio">
-                    <label for="a3">사과파이</label>
-                    <br>
-                    <input type="radio" name="radio" id="a4" class="radio">
-                    <label for="a4">대한죽창연합회</label>
-                </form>
-            </div>
+<h5 style="margin-top: 40px">만들 그룹을 선택하세요:</h5>
+<form method="post" action="{{ url_for('groups.group_add') }}">
+  <div class="group-list">
+    <ul>
+      {% for group in groups %}
+      <li>
+      <input type="radio" value='{{ group['id'] }}' name="group_id" id="group_id{{ loop.index }}" class="radio">
+      <label for="group_id{{ loop.index }}">{{ group['name'] }}</label>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="btn-wrap">
+    <button class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
+  </div>
+</form>
 {% endblock %}

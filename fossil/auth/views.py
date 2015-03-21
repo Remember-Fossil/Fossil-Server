@@ -18,17 +18,17 @@ def login():
             access_token, expires = fb.get_access_token(request.args['code'])
             graph = Graph(access_token)
 
-            profile_data = graph.feed_get('me', {})
+            profile_data = graph.get('/me', {})
             user = User.all().filter('facebook_id =', profile_data['id']).get()
             if user is None:
                 user = User()
-                user.facebook_id = profile_data['id']
-                user.name = "{0}{1}".format(
-                    profile_data['last_name'].encode('utf-8'),
-                    profile_data['first_name'].encode('utf-8'))
-                image_url = graph.feed_get('me/picture',
+                user.facebook_id = profile_data['id'].decode('utf-8')
+                user.name = u"{0}{1}".format(
+                    profile_data['last_name'],
+                    profile_data['first_name'])
+                image_url = graph.get('/me/picture',
                                            {'redirect': False})['data']['url']
-                user.profile_image = ''
+                user.profile_image = image_url.decode('utf-8')
                 user.put()
 
             fb_session = FacebookSession.all().filter(
@@ -36,7 +36,7 @@ def login():
             if check_facebook_session(fb_session):
                 fb_session.access_token = access_token
                 fb_session.expires = int(expires)
-                fb_sessoin.put()
+                fb_session.put()
             else:
                 fb_session = FacebookSession()
                 fb_session.user = user

@@ -8,3 +8,17 @@ label {
 body{
     margin:10px;
 }
+
+.btn-check {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+/*    margin: auto 0;*/   
+}
+
+.group-list {
+    margin-bottom: 40px;
+}
+
+.btn-wrap {
+    text-align: center;
+}
