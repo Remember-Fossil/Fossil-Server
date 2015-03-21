@@ -101,7 +101,6 @@ def group_exam_get_question(group_id):
         .get()
 
     if last_game:
-        print "######## GAME ALREADY EXISTS!!!! ############"
         game = last_game
         answers_ids = json.loads(game.answers)
         answers_names = []
@@ -168,9 +167,16 @@ def end_game(game, status, user_select_member=None):
     game.put()
 
     if status == GameLog.INCORRECT:
-        message = '에베베베베베 난 겁나 멍청멍청해서 선배이름이랑 얼굴도 모른다~~~~'
-        graph = Graph(g.fb_session['token'])
-        graph.post('/{0}/feed', {'message': message})
+        if user_select_member:
+            message = u'%s님 왤케 못생김 겁나 %s같이 생겼음;;' % \
+                (game.question_member.name, user_select_member.name)
+        else:
+            message = u'%s님 왤케 못생김;; 못알아보겠네여!' % \
+                game.question_member.name
+        graph = Graph(g.fb_session.token)
+        graph.post('/{0}/feed'.format(game.group.group_id),
+                   {'message': message})
+
 
 @blue_groups.route('/<int:group_id>/exam/<int:game_id>/check',
                    methods=['POST'])
