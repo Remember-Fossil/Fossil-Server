@@ -49,7 +49,7 @@ def group_add():
             member = Member()
             member.group = group
             member.name = user_info['name']
-            image_url = graph.get('/me/picture', {'redirect': False})['data']['url']
+            image_url = graph.get('/{0}/picture'.format(user_info['id']), {'redirect': False})['data']['url']
             member.profile_image = image_url
             member.facebook_id = user_info['id']
             member.put()
