@@ -6,7 +6,7 @@ threadsafe: yes
 
 handlers:
 - url: .*
-  script: fossil.app
+  script: run.app
 
 libraries:
 - name: jinja2
