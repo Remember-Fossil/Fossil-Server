@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
 
 from flask import g, session, redirect, url_for
+from functools import wraps
 from .models import User
 
-class LoginRequired(object):
 
-    #uf_function으로 url_for 호출함수 커스텀가능
-    def __init__(self, *args, **kwargs):
-        super(LoginRequired, self).__init__(*args, **kwargs)
+# class LoginRequired(object):
+# uf_function으로 url_for 호출함수 커스텀가능
+#     def __init__(self, uf_function='auth.login'):
+#         self.uf_function = uf_function
 
-        uf_function = kwargs.pop('uf_fucntion', False)
-        if uf_function:
-            self.uf_function = uf_function
-        else:
-            self.uf_function = 'auth.login'
+#     def __call__(self, func):
+#         @wraps(func)
+#         def wrapper_func(*args, **kwargs):
+#             if not session.get('user_id', False):
+#                 return redirect(url_for(self.uf_function))
+#             g.user = User.get_by_id(session['user_id'])
+#             return func(*args, **kwargs)
+#         return wrapper_func
 
-    def __call__(self, func):
-        def wrapper_func(*args):
-            if not session.get('user_id', False):
-                return redirect(url_for(self.uf_function))
-            g.user = User.get_by_id(session['user_id'])
-            return func(*args)
-
-        return wrapper_func
-
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('user_id', False):
+            return redirect(url_for('auth.login'))
+        g.user = User.get_by_id(session['user_id'])
+        return f(*args, **kwargs)
+    return decorated_function
