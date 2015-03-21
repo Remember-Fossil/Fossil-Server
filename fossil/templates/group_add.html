@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/group_list.css') }}">
+{% endblock %}
+{% block container %}
+            <div class="group-list">
+                <form method="get" action="#">
+                    <br>
+                    <input type="radio" name="radio" id="a1" class="radio">
+                    <label for="a1">운천중학교 3-1 동문회</label>
+                    <br>
+                    <input type="radio" name="radio" id="a2" class="radio">
+                    <label for="a2">우주여우</label>
+                    <br>
+                    <input type="radio" name="radio" id="a3" class="radio">
+                    <label for="a3">사과파이</label>
+                    <br>
+                    <input type="radio" name="radio" id="a4" class="radio">
+                    <label for="a4">대한죽창연합회</label>
+                </form>
+            </div>
+{% endblock %}
