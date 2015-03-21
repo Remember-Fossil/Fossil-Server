@@ -1,0 +1,21 @@
+.img-size:last-child {
+/*    width:268px;*/
+    height:232px;
+    margin: 0;
+    padding: 0;
+}
+
+.img-size {
+    height: 232px;
+    margin:0;
+    padding: 0;
+}
+
+.card-image {
+    height: 232px;
+    text-align: center;
+}
+
+.mdi-content-add {
+    font-size: 11rem;
+}

@@ -41,14 +41,13 @@ def login():
                 fb_session.expires = int(expires)
                 fb_session.put()
             session['user_id'] = user.key().id_or_name()
-            return render_template('home.html', profile_data=profile_data)
-            #return redirect(url_for())
-    return render_template('login.html',
-                           facebook=current_app.config['FACEBOOK'])
+        else:
+            return render_template('login.html', facebook=current_app.config['FACEBOOK'])
+    return render_template('group_list.html')
+
 
 @blue_auth.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('auth.login'))
-
 
