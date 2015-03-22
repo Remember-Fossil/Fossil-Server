@@ -9,17 +9,20 @@
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/basic.css') }}">
-        <title>Remember Fossil</title>
+        <title>화석발굴</title>
     </head>
     <body>
         <nav>
             <div class="nav-wrapper">
-                <a href="{{ url_for('auth.login') }}" class="brand-logo">Remember Fossil</a>
+                <a href="{{ url_for('auth.login') }}" class="brand-logo">화석발굴</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     {% if group %}
                     <li><a href="{{ url_for('groups.group_members', group_id=group.key().id_or_name()) }}">멤버</a></li>
                     <li><a href="{{ url_for('groups.group_exam', group_id=group.key().id_or_name()) }}">시험</a></li>
 <!--                    <li><a href="#">관리</a></li>-->
+                    {% endif %}
+                    {% if 'user_id' in session %}
+                    <li><a href="{{ url_for('auth.logout') }}">로그아웃</a></li>
                     {% endif %}
                 </ul>
             </div>

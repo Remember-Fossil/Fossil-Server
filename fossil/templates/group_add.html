@@ -6,7 +6,7 @@
 
 {% block container %}
 <h5 style="margin-top: 40px">만들 그룹을 선택하세요:</h5>
-<form method="post" action="{{ url_for('groups.group_add') }}">
+<form method="post" action="{{ url_for('groups.group_add') }}" id="form">
   <div class="group-list">
     <ul>
       {% for group in groups %}
@@ -18,7 +18,65 @@
     </ul>
   </div>
   <div class="btn-wrap">
-    <button class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
+    <button type="submit" class="btn-check btn-large waves-effect waves-light" id="btn-check">OK</button>
   </div>
 </form>
+
+
+<div class="loading-wrapper">
+    <div class="loading-box preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+        <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div><!--
+    --><div class="vertical"></div>
+</div>
+{% endblock %}
+{% block lazy_script %}
+<script>
+    $(document).ready(function() {
+        $('#btn-check').click(function() {
+            $('#btn-check').prop('disabled', true);
+            $('.loading-wrapper').css('display', 'block');
+            $('#form').submit();
+        });
+    });
+</script>
 {% endblock %}

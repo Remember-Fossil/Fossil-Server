@@ -39,7 +39,7 @@ def group_add():
         group_info = graph.get('/{0}'.format(group_id), {})
         group = Group()
         group.name = group_info['name']
-        group.cover_image = 'http://cfile2.uf.tistory.com/image/1763F50C4BBD32EF052575'
+        group.cover_image = 'http://nodong.org/files/attach/images/903928/904/088/46c43230115f3db7b254f1d0ec7b2e81.jpg'
         group.group_id = group_info['id']
         group.put()
 
@@ -75,6 +75,18 @@ def group_members(group_id):
     members = Member.all().filter('group =', group.key())
 
     return render_template('group_members.html', group=group, members=members)
+
+
+# @blue_groups.route('/<int:group_id>/rank')
+# @login_required
+# def group_rank(group_id):
+#     group = Group.get_by_id_with_user(group_id, g.user)
+#     if not group:
+#         abort(404)
+
+#     GameLog.all().filter('group =', group.key()).filter('')
+
+#     return render_template('/group_rank.html', group=group)
 
 
 @blue_groups.route('/<int:group_id>/exam')

@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
+{% block head %}
+<style>
+    body {
+        background: url('{{ url_for("static", filename="img/bg.jpg") }}') !important;
+        color: #eee;
+    }
+</style>
+{% endblock %}
 {% block container %}
 <br><br>            
-<h1 class="header center orange-text">Starter Template</h1>
+<h1 class="header center blue-gray-text" style="color: #b71c1c; font-weight: 900">당신도 결국 화석이 됩니다.</h1>
             <div class="row center">
-                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+                <h5 class="header col s12 light">화석발굴에 가입하여 실세들에게 기억되세요.</h5>
             </div>
             <div class="row center">
-              <a href="https://graph.facebook.com/oauth/authorize?client_id={{ facebook.APP_ID }}&redirect_uri={{ facebook.REDIRECT_URI }}&scope={{ ','.join(facebook.SCOPE) }}" type="button" class="btn-large waves-effect waves-light orange">Facebook 로그인</a>
+              <a href="https://graph.facebook.com/oauth/authorize?client_id={{ facebook.APP_ID }}&redirect_uri={{ facebook.REDIRECT_URI }}&scope={{ ','.join(facebook.SCOPE) }}" type="button" class="btn-large waves-effect waves-light red darken-2" style="margin-top: 20px">Facebook 로그인</a>
             </div>
 <br><br>
 {% endblock %}
