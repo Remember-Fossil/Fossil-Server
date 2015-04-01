@@ -1,26 +1,30 @@
 # -*- coding: utf-8 -*-
 
 from flask import g, session, redirect, url_for
-from functools import wraps
 from .models import User, FacebookSession
+import functools
 
+# custom_function을 채우면 작동한다
+# 아마 안채워도 되는게있긴할텐데.t.
+# blueprint와 꼬임을 방지하기위해 wraps를 쓰는것 같기도...
+class LoginRequired(object):
+    def __init__(self, *args, **kwargs):
+        self.custom_function = kwargs.get('custom_function', 'auth.login')
 
-# class LoginRequired(object):
-# uf_function으로 url_for 호출함수 커스텀가능
-#     def __init__(self, uf_function='auth.login'):
-#         self.uf_function = uf_function
+    def __call__(self, fn):
+        @functools.wraps(fn)
+        def decorated(*args, **kwargs):
+            if not session.get('user_id', False):
+                return redirect(url_for(self.custom_function))
+            user = User.get_by_id(session['user_id'])
+            g.user = user
+            g.fb_session = FacebookSession.all().filter('user = ', user).get()
 
-#     def __call__(self, func):
-#         @wraps(func)
-#         def wrapper_func(*args, **kwargs):
-#             if not session.get('user_id', False):
-#                 return redirect(url_for(self.uf_function))
-#             g.user = User.get_by_id(session['user_id'])
-#             return func(*args, **kwargs)
-#         return wrapper_func
+            return fn(*args, **kwargs)
+        return decorated
 
 def login_required(f):
-    @wraps(f)
+    @functools.wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('user_id', False):
             return redirect(url_for('auth.login'))
