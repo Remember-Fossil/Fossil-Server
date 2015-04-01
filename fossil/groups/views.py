@@ -3,20 +3,18 @@ from flask import Blueprint, render_template, abort, g, request, redirect, \
     url_for, jsonify
 from .models import Group, Member, GameLog
 from fossil.fb import Graph
-from fossil.auth.decorators import login_required
+from fossil.auth.decorators import login_required, LoginRequired
 from google.appengine.ext import db
 import random
 import json
 
 blue_groups = Blueprint('groups', __name__, url_prefix='/groups')
 
-
 @blue_groups.route('/')
 @login_required
 def group_list():
     groups = Group.get_groups_by_user(g.user)
     return render_template('group_list.html', groups=groups)
-
 
 @blue_groups.route('/add', methods=['GET', 'POST'])
 @login_required
